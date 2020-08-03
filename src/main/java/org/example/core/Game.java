@@ -1,44 +1,20 @@
 package org.example.core;
 
+import org.example.entity.Card;
+import org.example.entity.Player;
+import org.example.exception.NoHandException;
+import org.example.service.Deck;
+
+import java.util.Collections;
+import java.util.Optional;
+
 public class Game implements AutoCloseable {
+
+    private static Game instance;
+    private Deck deck;
+
     private Game() {
         deck = new Deck();
-    }
-
-    @Override
-    public void close() throws Exception {
-        System.out.println("Cleaning up instance");
-        instance = null;
-    }
-
-    public void dealCard(Player p) {
-        p.hand.add(deck.dealCard());
-    }
-
-    public void printWinner(Player p1, Player p2) {
-        Card c1 = null;
-        Card c2 = null;
-        for (Card c : p1.hand) {
-            if (c1 == null) {
-                c1 = c;
-            } else if (c.value > c1.value)  {
-                 c1 = c;
-            }
-        }
-        for (Card c : p2.hand) {
-            if (c2 == null) {
-                c2 = c;
-            } else if (c.value > c2.value)  {
-                c2 = c;
-            }
-        }
-        if (c1.value > c2.value) {
-            System.out.println("Player 1 wins");
-        } else if (c2.value > c1.value) {
-            System.out.println("Player 2 wins");
-        } else {
-            System.out.println("It's a tie");
-        }
     }
 
     public static Game getInstance() {
@@ -48,6 +24,36 @@ public class Game implements AutoCloseable {
         return instance;
     }
 
-    private static Game instance;
-    private Deck deck;
+    @Override
+    public void close() throws Exception {
+        System.out.println("Cleaning up instance");
+        instance = null;
+    }
+
+    public void dealCard(Player p) throws Exception {
+        p.getHand().add(deck.dealCard());
+    }
+
+    public void printWinner(Player p1, Player p2) throws Exception {
+
+        Collections.sort(p1.getHand());
+        Collections.sort(p2.getHand());
+        if (!p1.getHand().isEmpty() && !p2.getHand().isEmpty()) {
+            Card c1 = Optional.ofNullable(p1.getHand().get(0)).orElseThrow(()->new NoHandException(""));
+            Card c2 = Optional.ofNullable(p2.getHand().get(0)).orElseThrow(()->new NoHandException(""));
+
+            if (c1.getValue() > c2.getValue()) {
+                System.out.println("Player 1 wins " + c1.getSuite() + " " + c1.getValue());
+            } else if (c2.getValue() > c1.getValue()) {
+                System.out.println("Player 2 wins " + c2.getSuite() + " " + c2.getValue());
+            } else {
+                System.out.println(c1.getSuite() + " " + c1.getValue() + " " + c2.getSuite() + " " + c2.getValue());
+                System.out.println("It's a tie");
+            }
+        }else{
+            throw new Exception("Players has to choose their cards");
+        }
+
+    }
+
 }
