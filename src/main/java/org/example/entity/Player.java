@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private  List<Card> hand;
+    private List<Card> hand;
+    private int number;
 
-    public Player() {
+    public Player(int number) {
+        this.number = number;
         hand = new ArrayList();
     }
 
@@ -20,5 +22,13 @@ public class Player {
 
     public void setHand(List<Card> hand) {
         this.hand = hand;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

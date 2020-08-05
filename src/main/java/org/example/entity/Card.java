@@ -2,7 +2,7 @@ package org.example.entity;
 
 import org.example.consts.Suite;
 
-public class Card implements Comparable<Card>{
+public class Card implements Comparable<Card> {
 
     private Suite suite;
     private int value;

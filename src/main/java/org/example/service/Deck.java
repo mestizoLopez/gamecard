@@ -14,26 +14,24 @@ public class Deck {
 
     public Deck() {
         deck = new ArrayList();
-        /*
-        for(int i = 1 ; i <= 13 ; i++){
+        for (int i = 1; i <= 13; i++) {
             deck.add(new Card(i, Suite.CLUBS));
-            deck.add(new Card(i,Suite.DIAMONDS));
-            deck.add(new Card(i,Suite.HEARTS));
-            deck.add(new Card(i,Suite.SPADE));
+            deck.add(new Card(i, Suite.DIAMONDS));
+            deck.add(new Card(i, Suite.HEARTS));
+            deck.add(new Card(i, Suite.SPADE));
         }
-         */
     }
 
     public Card dealCard() throws Exception {
 
-        Optional.ofNullable(deck).orElseThrow( ()-> new EmptyDeckException("null there aren't cards in the deck"));
-        if(!deck.isEmpty()) {
+        Optional.ofNullable(deck).orElseThrow(() -> new EmptyDeckException("Thhere aren't cards in the deck"));
+        if (!deck.isEmpty()) {
             final int rand = (int) (Math.random() * ((deck.size() - 1)));
             final Card card = deck.get(rand);
             deck.remove(card);
             return card;
-        }else{
-            throw new EmptyDeckException("There isn't more card in the deck");
+        } else {
+            throw new EmptyDeckException("There aren't more cards in the deck");
         }
 
     }
